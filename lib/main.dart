@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Budżet domowy',
             home: const MainNavigator(),
+            debugShowCheckedModeBanner: false,
             themeMode: mode,
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
