@@ -49,7 +49,6 @@ class _MainNavigatorState extends State<MainNavigator> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              //mainAxisSize: MainAxisSize.min,
               children: [
                 AnimatedToggleSwitch<ThemeMode>.rolling(
                     current: context.watch<ThemeCubit>().state,
@@ -67,8 +66,6 @@ class _MainNavigatorState extends State<MainNavigator> {
                     style: ToggleStyle(
                       backgroundColor: Colors.blueGrey,
                       borderRadius: BorderRadius.circular(16),
-                      //indicatorBorderRadius: BorderRadius.circular(64),
-                      //indicatorColor: Colors.black,
                     ),
                 ),
               ],

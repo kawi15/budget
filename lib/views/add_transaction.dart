@@ -24,14 +24,14 @@ class _AddTransactionState extends State<AddTransaction> {
               onPressed: () {
 
               },
-              icon: Icon(Icons.add)
+              icon: const Icon(Icons.add)
           )
         ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.only(
+            margin: const EdgeInsets.only(
               top: 16,
               left: 12,
               right: 12,
@@ -50,7 +50,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   ),
                   TextFormField(
                     keyboardType: TextInputType.datetime,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: 'Data',
                         border: OutlineInputBorder()
                     ),
@@ -72,7 +72,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   ),
                   TextFormField(
                     keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: 'Opis',
                         border: OutlineInputBorder()
                     ),
@@ -87,7 +87,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       Expanded(
                         child: TextFormField(
                           keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               labelText: 'Autooszczędzanie',
                               border: OutlineInputBorder()
                           ),

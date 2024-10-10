@@ -1,8 +1,6 @@
-import 'package:budzet/views/add_transaction.dart';
 import 'package:budzet/app_theme.dart';
 import 'package:budzet/bloc/theme/theme_cubit.dart';
 
-import 'package:budzet/views/transaction_history.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -40,10 +38,10 @@ class MyApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            locale: Locale('pl'),
+            locale: const Locale('pl'),
             supportedLocales: const [
               Locale('en'), // English
-              Locale('pl'), // Spanish
+              Locale('pl'), // Polish
             ],
           );
         }
