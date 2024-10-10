@@ -1,16 +1,8 @@
-# budzet
+# budget
 
-Aplikacja do zarządzania budżetem.
+Application to manage budget monthly.
 
-## Getting Started
+## About application
 
-This project is a starting point for a Flutter application.
+This app is created to easily managing monthly expenses and control how much for what your money is going with personalized categories.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
