@@ -5,6 +5,7 @@ class AppTheme {
 
   static ThemeData get lightTheme =>
       ThemeData(
+          useMaterial3: true,
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: const AppBarTheme(
               color: Colors.white,
@@ -16,12 +17,21 @@ class AppTheme {
           bottomAppBarTheme: const BottomAppBarTheme(
               color: Colors.white
           ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.greenAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              )
+            )
+          ),
           brightness: Brightness.light
 
       );
 
   static ThemeData get darkTheme =>
       ThemeData(
+        useMaterial3: true,
         scaffoldBackgroundColor: Colors.black,
         appBarTheme: const AppBarTheme(
           color: Colors.black,
@@ -35,6 +45,14 @@ class AppTheme {
         ),
         bottomAppBarTheme: const BottomAppBarTheme(
           color: Colors.black
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.greenAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                )
+            )
         ),
         brightness: Brightness.dark,
       );
