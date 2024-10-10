@@ -21,6 +21,18 @@ class _MainNavigatorState extends State<MainNavigator> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Październik 2024'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: InkWell(
+              onTap: () {
+                //TODO select month
+              },
+              borderRadius: BorderRadius.circular(4),
+              child: const Icon(Icons.calendar_month),
+            ),
+          )
+        ],
       ),
       drawer: Drawer(
         child: ListView(
