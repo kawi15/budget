@@ -4,6 +4,8 @@ import 'package:budzet/views/transaction_history.dart';
 import 'package:budzet/widgets/theme_switch.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/fab.dart';
+
 class MainNavigator extends StatefulWidget {
   const MainNavigator({Key? key}) : super(key: key);
 
@@ -20,7 +22,12 @@ class _MainNavigatorState extends State<MainNavigator> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Październik 2024'),
+        title: const Text(
+          'Październik 2024',
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
@@ -120,13 +127,7 @@ class _MainNavigatorState extends State<MainNavigator> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const AddTransaction()));
-        },
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: const FAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       extendBody: true,
     );
