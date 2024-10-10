@@ -8,7 +8,8 @@ class AppTheme {
           appBarTheme: const AppBarTheme(
               color: Colors.white,
               titleTextStyle: TextStyle(
-                  color: Colors.black
+                color: Colors.black,
+                fontSize: 16
               )
           ),
           drawerTheme: const DrawerThemeData(
@@ -30,7 +31,8 @@ class AppTheme {
               color: Colors.white
           ),
           titleTextStyle: TextStyle(
-            color: Colors.white
+            color: Colors.white,
+            fontSize: 16
           )
         ),
         drawerTheme: const DrawerThemeData(

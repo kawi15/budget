@@ -1,5 +1,6 @@
 import 'package:budzet/views/add_transaction.dart';
 import 'package:budzet/views/budget.dart';
+import 'package:budzet/views/edit_categories.dart';
 import 'package:budzet/views/transaction_history.dart';
 import 'package:budzet/widgets/theme_switch.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +25,6 @@ class _MainNavigatorState extends State<MainNavigator> {
       appBar: AppBar(
         title: const Text(
           'Październik 2024',
-          style: TextStyle(
-            fontSize: 16,
-          ),
         ),
         actions: [
           Padding(
@@ -53,9 +51,9 @@ class _MainNavigatorState extends State<MainNavigator> {
               child: Text('Drawer Header'),
             ),
             ListTile(
-              title: const Text('Item 1'),
+              title: const Text('Kategorie'),
               onTap: () {
-
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EditCategories()));
               },
             ),
             ListTile(

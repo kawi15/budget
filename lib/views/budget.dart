@@ -9,6 +9,10 @@ class Budget extends StatefulWidget {
 }
 
 class _BudgetState extends State<Budget> {
+
+  static const List<String> categories = ['Osobiste', 'Jedzenie', 'Zdrowie', 'Dom', 'Podróże'];
+  static const List<dynamic> values = [123, 343.15, 33, 81, 0];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +25,7 @@ class _BudgetState extends State<Budget> {
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8
             ),
-            itemCount: 5,
+            itemCount: categories.length,
             itemBuilder: (ctx, index) {
               return InkWell(
                 onTap: () {
@@ -34,14 +38,14 @@ class _BudgetState extends State<Budget> {
                       borderRadius: BorderRadius.circular(8),
                       color: Colors.greenAccent
                   ),
-                  child: const Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                          'Sierpień 2024'
+                        categories[index]
                       ),
                       Text(
-                          '356 zł'
+                        '${values[index]} zł'
                       )
                     ],
                   ),
