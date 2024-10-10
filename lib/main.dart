@@ -1,5 +1,6 @@
 import 'package:budzet/app_theme.dart';
 import 'package:budzet/bloc/theme/theme_cubit.dart';
+import 'package:budzet/views/splash/splash_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         builder: (context, ThemeMode mode) {
           return MaterialApp(
             title: 'Budżet domowy',
-            home: const MainNavigator(),
+            home: const SplashScreen(),
             debugShowCheckedModeBanner: false,
             themeMode: mode,
             theme: AppTheme.lightTheme,
