@@ -79,11 +79,14 @@ class _AddTransactionState extends State<AddTransaction> {
                   ),
                   Row(
                     children: [
-                      Switch(value: autosaving, onChanged: (value) {
-                        setState(() {
-                          autosaving = value;
-                        });
-                      }),
+                      Checkbox(
+                          value: autosaving,
+                          onChanged: (value) {
+                            setState(() {
+                              autosaving = !autosaving;
+                            });
+                          }
+                      ),
                       Expanded(
                         child: TextFormField(
                           keyboardType: TextInputType.number,

@@ -1,5 +1,6 @@
 import 'package:budzet/views/add_transaction.dart';
 import 'package:budzet/views/budget.dart';
+import 'package:budzet/views/budget_settings.dart';
 import 'package:budzet/views/edit_categories.dart';
 import 'package:budzet/views/transaction_history.dart';
 import 'package:budzet/widgets/theme_switch.dart';
@@ -57,9 +58,9 @@ class _MainNavigatorState extends State<MainNavigator> {
               },
             ),
             ListTile(
-              title: const Text('Item 2'),
+              title: const Text('Ustawienia budżetu'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BudgetSettings()));
               },
             ),
             const ThemeSwitch()

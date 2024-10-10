@@ -1,3 +1,4 @@
+import 'package:budzet/text_style_base.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -7,10 +8,7 @@ class AppTheme {
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: const AppBarTheme(
               color: Colors.white,
-              titleTextStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 16
-              )
+              titleTextStyle: TextStyleBase.appBarLight
           ),
           drawerTheme: const DrawerThemeData(
             backgroundColor: Colors.white,
@@ -30,10 +28,7 @@ class AppTheme {
           iconTheme: IconThemeData(
               color: Colors.white
           ),
-          titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 16
-          )
+          titleTextStyle: TextStyleBase.appBarDark
         ),
         drawerTheme: const DrawerThemeData(
           backgroundColor: Colors.black,
