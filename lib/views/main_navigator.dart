@@ -5,6 +5,8 @@ import 'package:budzet/views/edit_categories.dart';
 import 'package:budzet/views/transaction_history.dart';
 import 'package:budzet/widgets/theme_switch.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 import '../widgets/fab.dart';
 
@@ -18,22 +20,36 @@ class MainNavigator extends StatefulWidget {
 class _MainNavigatorState extends State<MainNavigator> {
 
   int _currentIndex = 0;
+  DateTime selectedMonth = DateTime.now();
   final PageController _pageController = PageController();
+
+  void changeMonth() {
+    showMonthPicker(
+        context: context,
+        initialDate: selectedMonth,
+        locale: const Locale('pl'),
+        dismissible: true
+    ).then((date) {
+      if (date != null) {
+        setState(() {
+          selectedMonth = date;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Październik 2024',
+        title: Text(
+          DateFormat.yMMMM(Localizations.localeOf(context).languageCode).format(selectedMonth),
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: InkWell(
-              onTap: () {
-                //TODO select month
-              },
+              onTap: changeMonth,
               borderRadius: BorderRadius.circular(4),
               child: const Icon(Icons.calendar_month),
             ),
@@ -76,9 +92,9 @@ class _MainNavigatorState extends State<MainNavigator> {
               _currentIndex = index;
             });
           },
-          children: const [
-            Budget(),
-            TransactionHistory()
+          children: [
+            Budget(month: selectedMonth),
+            TransactionHistory(month: selectedMonth)
           ],
         ),
       ),

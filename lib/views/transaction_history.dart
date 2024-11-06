@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 
 class TransactionHistory extends StatefulWidget {
-  const TransactionHistory({Key? key}) : super(key: key);
+  const TransactionHistory({Key? key, required this.month}) : super(key: key);
+
+  final DateTime month;
 
   @override
   State<TransactionHistory> createState() => _TransactionHistoryState();
