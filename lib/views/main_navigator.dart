@@ -57,30 +57,25 @@ class _MainNavigatorState extends State<MainNavigator> {
         ],
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.greenAccent
+        child: SafeArea(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              ListTile(
+                title: const Text('Kategorie'),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EditCategories()));
+                },
               ),
-              margin: EdgeInsets.zero,
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Kategorie'),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EditCategories()));
-              },
-            ),
-            ListTile(
-              title: const Text('Ustawienia budżetu'),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BudgetSettings()));
-              },
-            ),
-            const ThemeSwitch()
-          ]
+              ListTile(
+                title: const Text('Ustawienia budżetu'),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BudgetSettings()));
+                },
+              ),
+              const ThemeSwitch()
+            ]
+          ),
         ),
       ),
       body: SafeArea(
@@ -118,7 +113,7 @@ class _MainNavigatorState extends State<MainNavigator> {
                     mainAxisSize: MainAxisSize.min,
                     children:[
                       Icon(Icons.home_outlined, color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white),
-                      const Text("Home")
+                      const Text("Podsumowanie")
                     ]
                 )
             ),
@@ -135,7 +130,7 @@ class _MainNavigatorState extends State<MainNavigator> {
                     mainAxisSize: MainAxisSize.min,
                     children:[
                       Icon(Icons.multiline_chart, color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white),
-                      const Text("Stats")
+                      const Text("Transakcje")
                     ]
                 )
             ),
