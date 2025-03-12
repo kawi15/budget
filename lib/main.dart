@@ -1,5 +1,8 @@
 import 'package:budzet/app_theme.dart';
 import 'package:budzet/bloc/theme/theme_cubit.dart';
+import 'package:budzet/bloc/transaction/transaction_bloc.dart';
+import 'package:budzet/bloc/transaction/transaction_event.dart';
+import 'package:budzet/repository/transaction_repository.dart';
 import 'package:budzet/views/splash/splash_screen.dart';
 
 import 'package:flutter/material.dart';
@@ -24,8 +27,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ThemeCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ThemeCubit()),
+        BlocProvider(
+            create: (context) => TransactionBloc(
+              transactionRepository: TransactionRepository()
+            )..add(LoadTransactions(DateTime.now()))
+        )
+      ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, ThemeMode mode) {
           return MaterialApp(
