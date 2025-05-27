@@ -1,70 +1,89 @@
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../models/transaction.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:budzet/models/transaction.dart' as model;
 
 class TransactionRepository {
-  static const String _storageKey = 'budget_transactions';
+  final Database _database;
 
-  Future<List<Transaction>> loadTransactions() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? transactionsJson = prefs.getString(_storageKey);
+  TransactionRepository(this._database);
 
-      if (transactionsJson == null) {
-        return [];
-      }
+  Future<List<model.Transaction>> getTransactions({
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
+    final List<Map<String, dynamic>> maps;
 
-      List<dynamic> decodedJson = jsonDecode(transactionsJson);
-      return decodedJson.map((item) => Transaction.fromJson(item)).toList();
-    } catch (e) {
-      throw Exception('Failed to load transactions: ${e.toString()}');
+    if (startDate != null && endDate != null) {
+      maps = await _database.query(
+        'transactions',
+        where: 'date BETWEEN ? AND ?',
+        whereArgs: [
+          startDate.toIso8601String(),
+          endDate.toIso8601String(),
+        ],
+        orderBy: 'date DESC',
+      );
+    } else {
+      maps = await _database.query(
+        'transactions',
+        orderBy: 'date DESC',
+      );
     }
+
+    return List.generate(maps.length, (i) {
+      return model.Transaction.fromMap(maps[i]);
+    });
   }
 
-  Future<List<Transaction>> addTransaction(Transaction transaction) async {
-    try {
-      final List<Transaction> currentTransactions = await loadTransactions();
-      final List<Transaction> updatedTransactions = List.from(currentTransactions)..add(transaction);
-      await _saveTransactions(updatedTransactions);
-      return updatedTransactions;
-    } catch (e) {
-      throw Exception('Failed to add transaction: ${e.toString()}');
-    }
-  }
-
-  Future<List<Transaction>> updateTransaction(Transaction updatedTransaction) async {
-    try {
-      final List<Transaction> currentTransactions = await loadTransactions();
-      final List<Transaction> updatedTransactions = currentTransactions.map((transaction) {
-        return transaction.id == updatedTransaction.id ? updatedTransaction : transaction;
-      }).toList();
-
-      await _saveTransactions(updatedTransactions);
-      return updatedTransactions;
-    } catch (e) {
-      throw Exception('Failed to update transaction: ${e.toString()}');
-    }
-  }
-
-  Future<List<Transaction>> deleteTransaction(int id) async {
-    try {
-      final List<Transaction> currentTransactions = await loadTransactions();
-      final List<Transaction> updatedTransactions = currentTransactions
-          .where((transaction) => transaction.id != id)
-          .toList();
-
-      await _saveTransactions(updatedTransactions);
-      return updatedTransactions;
-    } catch (e) {
-      throw Exception('Failed to delete transaction: ${e.toString()}');
-    }
-  }
-
-  Future<void> _saveTransactions(List<Transaction> transactions) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String encodedJson = jsonEncode(
-        transactions.map((transaction) => transaction.toJson()).toList()
+  Future<int> insertTransaction(model.Transaction transaction) async {
+    return await _database.insert(
+      'transactions',
+      transaction.toMap(),
     );
-    await prefs.setString(_storageKey, encodedJson);
+  }
+
+  Future<int> updateTransaction(model.Transaction transaction) async {
+    return await _database.update(
+      'transactions',
+      transaction.toMap(),
+      where: 'id = ?',
+      whereArgs: [transaction.id],
+    );
+  }
+
+  Future<int> deleteTransaction(int id) async {
+    return await _database.delete(
+      'transactions',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<List<model.Transaction>> getTransactionsByCategory(int categoryId) async {
+    final List<Map<String, dynamic>> maps = await _database.query(
+      'transactions',
+      where: 'categoryId = ?',
+      whereArgs: [categoryId],
+    );
+
+    return List.generate(maps.length, (i) {
+      return model.Transaction.fromMap(maps[i]);
+    });
+  }
+
+  Future<double> getAmountByCategory(int categoryId, DateTime startDate, DateTime endDate) async {
+    final result = await _database.rawQuery(
+      '''
+      SELECT SUM(amount) as total
+      FROM transactions
+      WHERE categoryId = ? AND date BETWEEN ? AND ?
+      ''',
+      [
+        categoryId,
+        startDate.toIso8601String(),
+        endDate.toIso8601String(),
+      ],
+    );
+
+    return result.first['total'] as double? ?? 0.0;
   }
 }

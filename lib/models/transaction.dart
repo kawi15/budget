@@ -1,63 +1,60 @@
 import 'package:budzet/models/category.dart';
 import 'package:equatable/equatable.dart';
 
-class Transaction extends Equatable {
-  final int id;
-  final String name;
+class Transaction {
+  final int? id;
+  final String title;
   final double amount;
-  final Category category;
+  final int? categoryId;
   final DateTime date;
-  final bool isCost;
+  final bool isExpense;
 
   const Transaction({
-    required this.id,
-    required this.name,
+    this.id,
+    required this.title,
     required this.amount,
-    required this.category,
+    this.categoryId,
     required this.date,
-    required this.isCost
+    required this.isExpense
   });
 
-  @override
-  List<Object> get props => [id, name, amount, date, category, isCost];
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'amount': amount,
-      'date': date.toIso8601String(),
-      'category': category,
-      'is_cost': isCost,
-    };
+  factory Transaction.fromMap(Map<String, dynamic> map) {
+    return Transaction(
+      id: map['id'],
+      title: map['title'],
+      amount: map['amount'],
+      date: DateTime.parse(map['date']),
+      categoryId: map['categoryId'],
+      isExpense: map['isExpense'] == 1,
+    );
   }
 
-  factory Transaction.fromJson(Map<String, dynamic> json) {
-    return Transaction(
-      id: json['id'],
-      name: json['name'],
-      amount: json['amount'],
-      date: DateTime.parse(json['date']),
-      category: json['category'],
-      isCost: json['is_cost'],
-    );
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'amount': amount,
+      'date': date.toIso8601String(),
+      'categoryId': categoryId,
+      'isExpense': isExpense ? 1 : 0,
+    };
   }
 
   Transaction copyWith({
     int? id,
-    String? name,
+    String? title,
     double? amount,
     DateTime? date,
-    Category? category,
-    bool? isCost,
+    int? categoryId,
+    bool? isExpense,
   }) {
     return Transaction(
       id: id ?? this.id,
-      name: name ?? this.name,
+      title: title ?? this.title,
       amount: amount ?? this.amount,
       date: date ?? this.date,
-      category: category ?? this.category,
-      isCost: isCost ?? this.isCost,
+      categoryId: categoryId ?? this.categoryId,
+      isExpense: isExpense ?? this.isExpense,
     );
   }
 }

@@ -1,36 +1,61 @@
-import 'package:equatable/equatable.dart';
 
-class Category extends Equatable {
-  final int id;
+
+class Category {
+  final int? id;
   final String name;
-  final double amount;
-  final double plannedAmount;
+  final bool isDefault;
+  final int? monthYear; // Format: YYYYMM, null for default categories
+  //final double? amount;
+  final double? plannedAmount;
+  final bool isExpense;
 
   const Category({
-    required this.id,
+    this.id,
     required this.name,
-    required this.amount,
-    required this.plannedAmount
+    required this.isDefault,
+    this.monthYear,
+    this.plannedAmount,
+    required this.isExpense,
   });
 
-  @override
-  List<Object> get props => [id, name, amount, plannedAmount];
 
-  Map<String, dynamic> toJson() {
+  factory Category.fromMap(Map<String, dynamic> map) {
+    return Category(
+      id: map['id'],
+      name: map['name'],
+      isDefault: map['isDefault'] == 1,
+      monthYear: map['monthYear'],
+      plannedAmount: map['plannedAmount'],
+      isExpense: map['isExpense'] == 1,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
-      'amount': amount,
-      'planned_amount': plannedAmount,
+      'isDefault': isDefault ? 1 : 0,
+      'monthYear': monthYear,
+      'plannedAmount': plannedAmount,
+      'isExpense': isExpense ? 1 : 0,
     };
   }
 
-  factory Category.fromJson(Map<String, dynamic> json) {
+  Category copyWith({
+    int? id,
+    String? name,
+    bool? isDefault,
+    int? monthYear,
+    double? plannedAmount,
+    bool? isExpense,
+  }) {
     return Category(
-      id: json['id'],
-      name: json['name'],
-      amount: json['amount'],
-      plannedAmount: json['planned_amount'],
+      id: id ?? this.id,
+      name: name ?? this.name,
+      isDefault: isDefault ?? this.isDefault,
+      monthYear: monthYear ?? this.monthYear,
+      plannedAmount: plannedAmount ?? this.plannedAmount,
+      isExpense: isExpense ?? this.isExpense,
     );
   }
 }

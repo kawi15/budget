@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/transaction/transaction_state.dart';
 
 
-class TransactionHistory extends StatefulWidget {
+/*class TransactionHistory extends StatefulWidget {
   const TransactionHistory({Key? key, required this.month}) : super(key: key);
 
   final DateTime month;
@@ -139,4 +139,4 @@ class _TransactionHistoryState extends State<TransactionHistory> with TickerProv
       )
     );
   }
-}
+}*/

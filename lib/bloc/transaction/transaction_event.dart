@@ -1,22 +1,21 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import '../../models/transaction.dart';
 
-@immutable
 abstract class TransactionEvent extends Equatable {
   const TransactionEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class LoadTransactions extends TransactionEvent {
-  final DateTime month;
+  final DateTime? startDate;
+  final DateTime? endDate;
 
-  const LoadTransactions(this.month);
+  const LoadTransactions({this.startDate, this.endDate});
 
   @override
-  List<Object> get props => [month];
+  List<Object?> get props => [startDate, endDate];
 }
 
 class AddTransaction extends TransactionEvent {
@@ -44,13 +43,4 @@ class DeleteTransaction extends TransactionEvent {
 
   @override
   List<Object> get props => [id];
-}
-
-class ChangeMonth extends TransactionEvent {
-  final DateTime month;
-
-  const ChangeMonth(this.month);
-
-  @override
-  List<Object> get props => [month];
 }

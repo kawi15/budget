@@ -3,38 +3,60 @@ import 'package:budzet/views/budget.dart';
 import 'package:budzet/views/budget_settings.dart';
 import 'package:budzet/views/edit_categories.dart';
 import 'package:budzet/views/transaction_history.dart';
+import 'package:budzet/views/transaction_history_screen.dart';
 import 'package:budzet/widgets/theme_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 import '../widgets/fab.dart';
+import 'add_transaction_screen.dart';
+import 'budget_summary_screen.dart';
 
-class MainNavigator extends StatefulWidget {
-  const MainNavigator({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<MainNavigator> createState() => _MainNavigatorState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MainNavigatorState extends State<MainNavigator> {
-
-  int _currentIndex = 0;
-  DateTime selectedMonth = DateTime.now();
+class _HomeScreenState extends State<HomeScreen> {
   final PageController _pageController = PageController();
+  int _currentIndex = 0;
+  DateTime _selectedDate = DateTime.now();
 
-  void changeMonth() {
-    showMonthPicker(
-        context: context,
-        initialDate: selectedMonth,
-        locale: const Locale('pl'),
-        dismissible: true
-    ).then((date) {
-      if (date != null) {
-        setState(() {
-          selectedMonth = date;
-        });
-      }
+  int get _currentMonthYear =>
+      _selectedDate.year * 100 + _selectedDate.month;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  void _previousMonth() {
+    setState(() {
+      _selectedDate = DateTime(
+        _selectedDate.year,
+        _selectedDate.month - 1,
+        1,
+      );
+    });
+  }
+
+  void _nextMonth() {
+    setState(() {
+      _selectedDate = DateTime(
+        _selectedDate.year,
+        _selectedDate.month + 1,
+        1,
+      );
     });
   }
 
@@ -42,104 +64,67 @@ class _MainNavigatorState extends State<MainNavigator> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          DateFormat.yMMMM(Localizations.localeOf(context).languageCode).format(selectedMonth),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: InkWell(
-              onTap: changeMonth,
-              borderRadius: BorderRadius.circular(4),
-              child: const Icon(Icons.calendar_month),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.arrow_left),
+              onPressed: _previousMonth,
             ),
-          )
+            Text(DateFormat('MMMM yyyy').format(_selectedDate)),
+            IconButton(
+              icon: const Icon(Icons.arrow_right),
+              onPressed: _nextMonth,
+            ),
+          ],
+        ),
+        centerTitle: true,
+      ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        children: [
+          BudgetSummaryScreen(monthYear: _currentMonthYear),
+          TransactionHistoryScreen(
+            startDate: DateTime(_selectedDate.year, _selectedDate.month, 1),
+            endDate: DateTime(_selectedDate.year, _selectedDate.month + 1, 0),
+          ),
         ],
       ),
-      drawer: Drawer(
-        child: SafeArea(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              ListTile(
-                title: const Text('Kategorie'),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EditCategories()));
-                },
-              ),
-              ListTile(
-                title: const Text('Ustawienia budżetu'),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BudgetSettings()));
-                },
-              ),
-              const ThemeSwitch()
-            ]
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.pie_chart),
+            label: 'Podsumowanie',
           ),
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'Historia',
+          ),
+        ],
       ),
-      body: SafeArea(
-        maintainBottomViewPadding: true,
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          children: [
-            Budget(month: selectedMonth),
-            TransactionHistory(month: selectedMonth)
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 8,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            InkWell(
-                customBorder: const CircleBorder(),
-                splashFactory: NoSplash.splashFactory,
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () {
-                  _currentIndex = 0;
-                  _pageController.animateToPage(_currentIndex, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
-                },
-                child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children:[
-                      Icon(Icons.home_outlined, color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white),
-                      const Text("Podsumowanie")
-                    ]
-                )
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddTransactionScreen(
+                monthYear: _currentMonthYear,
+              ),
             ),
-            InkWell(
-                customBorder: const CircleBorder(),
-                splashFactory: NoSplash.splashFactory,
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () {
-                  _currentIndex = 1;
-                  _pageController.animateToPage(_currentIndex, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
-                },
-                child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children:[
-                      Icon(Icons.multiline_chart, color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white),
-                      const Text("Transakcje")
-                    ]
-                )
-            ),
-          ],
-        ),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
-      floatingActionButton: const FAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      extendBody: true,
     );
   }
 }
