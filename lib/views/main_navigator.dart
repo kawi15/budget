@@ -80,6 +80,22 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
       ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                ListTile(
+                  title: const Text('Ustawienia budżetu'),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BudgetSettings()));
+                  },
+                ),
+                const ThemeSwitch()
+              ]
+          ),
+        ),
+      ),
       body: PageView(
         controller: _pageController,
         onPageChanged: _onPageChanged,

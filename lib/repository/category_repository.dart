@@ -35,6 +35,20 @@ class CategoryRepository {
     });
   }
 
+  Future<List<Category>> getDefaultCategories({bool? isExpense, int? monthYear}) async {
+    String whereClause = 'monthYear IS NULL AND isDefault = 1';
+
+    final List<Map<String, dynamic>> maps = await _database.query(
+      'categories',
+      where: whereClause.isNotEmpty ? whereClause : null,
+      orderBy: 'name ASC',
+    );
+
+    return List.generate(maps.length, (i) {
+      return Category.fromMap(maps[i]);
+    });
+  }
+
   Future<int> insertCategory(Category category) async {
     return await _database.insert(
       'categories',

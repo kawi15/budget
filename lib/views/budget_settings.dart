@@ -12,11 +12,12 @@ class _BudgetSettingsState extends State<BudgetSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ustawienia budżetu'),
+        title: const Text('Ustawienia budżetu'),
       ),
       body: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text('w budowie'),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
